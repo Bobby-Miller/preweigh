@@ -1,0 +1,62 @@
+{% load staticfiles %}
+<title>Preweigh Calculator</title>
+<main>Preweigh Time Calculator</main>
+{% if comp_list %}
+<ul>
+    {% for comp in comp_list %}
+        <li>
+            {{ comp.composition }}
+            <select id="{{ comp.composition }}_select">
+                {% for n in batch_count %}
+                    <option name="{{ comp.composition }}_select" value="{{ n }}">
+                        {{ n }}</option>
+                {% endfor %}
+            </select>
+        </li>
+    {% endfor %}
+<script>
+    var py_data = {{ py_data|safe }}
+
+    function calculate() {
+        var alert_string = "";
+        var total_time = 0;
+        var all_zero = true;
+        for (var comp in py_data) {
+            if (py_data.hasOwnProperty(comp)) {
+                var select_e = document.getElementById(py_data[comp].select_id);
+                var str_val = select_e.options[select_e.selectedIndex].value;
+                var int_val = parseInt(str_val, 10);
+                if (int_val > 0) {
+                    all_zero = false;
+                    var work_data = py_data[comp].work_data;
+                    var find_pull_return = (
+                              work_data.find_major.minutes
+                            + work_data.pull_major.minutes
+                            + work_data.return_major.minutes
+                    );
+                    var weigh_major = work_data.weigh_major.minutes * int_val;
+                    var weigh_minor = work_data.weigh_minor.minutes * int_val;
+
+                    alert_string += (
+                        'For comp ' + py_data[comp].comp + ':\n' +
+                        'Time to find, pull, and return materials:  ' + find_pull_return +
+                        ' minutes\n' +
+                        'Time to weigh major materials:  ' + weigh_major + ' minutes\n' +
+                        'Time to weigh minor materials:  ' + weigh_minor + ' minutes\n\n'
+                    );
+                    total_time += find_pull_return + weigh_major + weigh_minor
+                }
+            }
+        }
+        if (!all_zero) {
+            alert_string += ('\nTotal time to produce is:  ' +
+                total_time + ' minutes. (' + (total_time/60).toFixed(2) + ' hours).');
+            alert(alert_string)
+        }
+    }
+</script>
+</ul>
+    <button onclick="calculate()" type="button">Calculate Time</button>
+{% else %}
+<p>No compositions have been added yet.</p>
+{% endif %}
