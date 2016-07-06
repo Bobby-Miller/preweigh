@@ -107,10 +107,17 @@
     <table name="preweigh_calculator_configs" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="variable" sqlType="VARCHAR(32)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="int_val" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <column name="float_val" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
       <column name="str_val" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="bool_val" sqlType="BOOL" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="int_val" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <primary-key columns="id"/>
+    </table>
+    <table name="preweigh_calculator_work" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="task" sqlType="VARCHAR(127)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="minutes" sqlType="REAL" precision="0" scale="-1" nullable="false" jdbcType="6"/>
+      <column name="people" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
     </table>
     <table name="sqlite_sequence" schema="" catalog="" type="TABLE">
